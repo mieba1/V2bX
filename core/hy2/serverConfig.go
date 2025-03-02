@@ -17,10 +17,12 @@ type serverConfig struct {
 	QUIC                  serverConfigQUIC            `mapstructure:"quic"`
 	Bandwidth             serverConfigBandwidth       `mapstructure:"bandwidth"`
 	IgnoreClientBandwidth bool                        `mapstructure:"ignoreClientBandwidth"`
+	SpeedTest             bool                        `mapstructure:"speedTest"`
 	DisableUDP            bool                        `mapstructure:"disableUDP"`
 	UDPIdleTimeout        time.Duration               `mapstructure:"udpIdleTimeout"`
 	Auth                  serverConfigAuth            `mapstructure:"auth"`
 	Resolver              serverConfigResolver        `mapstructure:"resolver"`
+	Sniff                 serverConfigSniff           `mapstructure:"sniff"`
 	ACL                   serverConfigACL             `mapstructure:"acl"`
 	Outbounds             []serverConfigOutboundEntry `mapstructure:"outbounds"`
 	TrafficStats          serverConfigTrafficStats    `mapstructure:"trafficStats"`
@@ -110,6 +112,14 @@ type serverConfigResolver struct {
 	UDP   serverConfigResolverUDP   `mapstructure:"udp"`
 	TLS   serverConfigResolverTLS   `mapstructure:"tls"`
 	HTTPS serverConfigResolverHTTPS `mapstructure:"https"`
+}
+
+type serverConfigSniff struct {
+	Enable        bool          `mapstructure:"enable"`
+	Timeout       time.Duration `mapstructure:"timeout"`
+	RewriteDomain bool          `mapstructure:"rewriteDomain"`
+	TCPPorts      string        `mapstructure:"tcpPorts"`
+	UDPPorts      string        `mapstructure:"udpPorts"`
 }
 
 type serverConfigACL struct {

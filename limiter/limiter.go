@@ -37,7 +37,7 @@ type Limiter struct {
 	ProtocolRules []string
 	SpeedLimit    int
 	UserOnlineIP  *sync.Map      // Key: Name, value: {Key: Ip, value: Uid}
-	OldUserOnline *sync.Map 	 // Key: Ip, value: Uid
+	OldUserOnline *sync.Map      // Key: Ip, value: Uid
 	UUIDtoUID     map[string]int // Key: UUID, value: Uid
 	UserLimitInfo *sync.Map      // Key: Uid value: UserLimitInfo
 	ConnLimiter   *ConnLimiter   // Key: Uid value: ConnLimiter
@@ -164,6 +164,8 @@ func (l *Limiter) CheckLimit(taguuid string, ip string, isTcp bool, noSSUDP bool
 		} else {
 			userLimit = determineSpeedLimit(u.SpeedLimit, u.DynamicSpeedLimit)
 		}
+	} else {
+		return nil, true
 	}
 	if noSSUDP {
 		// Store online user for device limit
@@ -181,8 +183,8 @@ func (l *Limiter) CheckLimit(taguuid string, ip string, isTcp bool, noSSUDP bool
 						return nil, true
 					}
 				}
-			}	
-		} else if v, ok := l.OldUserOnline.Load(ip); ok{
+			}
+		} else if v, ok := l.OldUserOnline.Load(ip); ok {
 			if v.(int) == uid {
 				l.OldUserOnline.Delete(ip)
 			}
