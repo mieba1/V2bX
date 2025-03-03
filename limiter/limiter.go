@@ -164,8 +164,6 @@ func (l *Limiter) CheckLimit(taguuid string, ip string, isTcp bool, noSSUDP bool
 		} else {
 			userLimit = determineSpeedLimit(u.SpeedLimit, u.DynamicSpeedLimit)
 		}
-	} else {
-		return nil, true
 	}
 	if noSSUDP {
 		// Store online user for device limit
