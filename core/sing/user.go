@@ -138,5 +138,9 @@ func (b *Sing) DelUsers(users []panel.UserInfo, tag string, info *panel.NodeInfo
 	if err != nil {
 		return err
 	}
+	err = b.hookServer.CloseConnections(tag, uuids)
+	if err != nil {
+		return err
+	}
 	return nil
 }
