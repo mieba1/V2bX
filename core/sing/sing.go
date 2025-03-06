@@ -83,7 +83,6 @@ func New(c *conf.CoreConfig) (vCore.Core, error) {
 }
 
 func (b *Sing) Start() error {
-	b.hookServer.Cleanup.Start(false)
 	return b.box.Start()
 }
 
