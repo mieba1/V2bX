@@ -113,7 +113,6 @@ jobs:
 
       - name: Get project dependencies
         run: |
-          git submodule update --init --recursive
           go mod download
       - name: Get release version
         if: ${{ github.event_name == 'release' }}
