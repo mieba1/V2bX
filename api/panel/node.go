@@ -32,6 +32,7 @@ type NodeInfo struct {
 	VAllss      *VAllssNode
 	Shadowsocks *ShadowsocksNode
 	Trojan      *TrojanNode
+	Tuic        *TuicNode
 	Hysteria    *HysteriaNode
 	Hysteria2   *Hysteria2Node
 	Common      *CommonNode
@@ -98,6 +99,12 @@ type TrojanNode struct {
 	CommonNode
 	Network         string          `json:"network"`
 	NetworkSettings json.RawMessage `json:"networkSettings"`
+}
+
+type TuicNode struct {
+	CommonNode
+	CongestionControl string `json:"congestion_control"`
+	ZeroRTTHandshake  bool   `json:"zero_rtt_handshake"`
 }
 
 type HysteriaNode struct {
@@ -202,6 +209,15 @@ func (c *Client) GetNodeInfo() (node *NodeInfo, err error) {
 		}
 		cm = &rsp.CommonNode
 		node.Trojan = rsp
+		node.Security = Tls
+	case "tuic":
+		rsp := &TuicNode{}
+		err = json.Unmarshal(r.Body(), rsp)
+		if err != nil {
+			return nil, fmt.Errorf("decode tuic params error: %s", err)
+		}
+		cm = &rsp.CommonNode
+		node.Tuic = rsp
 		node.Security = Tls
 	case "hysteria":
 		rsp := &HysteriaNode{}
